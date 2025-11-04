@@ -19,6 +19,7 @@ public class ChunkMesh {
     private Matrix4f modelMatrix;
     private static boolean debugPrinted = false;
     private static int totalChunksBuilt = 0;
+    private static final float EPSILON = 0.0008f;
     
     public ChunkMesh(Chunk chunk, World world) {
         this.modelMatrix = new Matrix4f().identity();
@@ -120,13 +121,14 @@ public class ChunkMesh {
     private void addTopFace(List<Float> vertices, float x, float y, float z, BlockType block, int worldX, int worldY, int worldZ) {
         float[] color = applyTint(block.getFaceColor(0), worldX, worldY, worldZ);
         float shade = 1.0f;
+        float yTop = y + 1.0f + EPSILON;
         float[] verts = {
-            x,     y+1, z,     color[0]*shade, color[1]*shade, color[2]*shade,
-            x+1,   y+1, z,     color[0]*shade, color[1]*shade, color[2]*shade,
-            x+1,   y+1, z+1,   color[0]*shade, color[1]*shade, color[2]*shade,
-            x,     y+1, z,     color[0]*shade, color[1]*shade, color[2]*shade,
-            x+1,   y+1, z+1,   color[0]*shade, color[1]*shade, color[2]*shade,
-            x,     y+1, z+1,   color[0]*shade, color[1]*shade, color[2]*shade
+            x,     yTop, z,     color[0]*shade, color[1]*shade, color[2]*shade,
+            x,     yTop, z+1,   color[0]*shade, color[1]*shade, color[2]*shade,
+            x+1,   yTop, z+1,   color[0]*shade, color[1]*shade, color[2]*shade,
+            x,     yTop, z,     color[0]*shade, color[1]*shade, color[2]*shade,
+            x+1,   yTop, z+1,   color[0]*shade, color[1]*shade, color[2]*shade,
+            x+1,   yTop, z,     color[0]*shade, color[1]*shade, color[2]*shade
         };
         for (float v : verts) vertices.add(v);
     }
@@ -134,13 +136,14 @@ public class ChunkMesh {
     private void addBottomFace(List<Float> vertices, float x, float y, float z, BlockType block, int worldX, int worldY, int worldZ) {
         float[] color = applyTint(block.getFaceColor(1), worldX, worldY, worldZ);
         float shade = 0.5f;
+        float yBottom = y - EPSILON;
         float[] verts = {
-            x,   y, z+1, color[0]*shade, color[1]*shade, color[2]*shade,
-            x+1, y, z+1, color[0]*shade, color[1]*shade, color[2]*shade,
-            x+1, y, z,   color[0]*shade, color[1]*shade, color[2]*shade,
-            x,   y, z+1, color[0]*shade, color[1]*shade, color[2]*shade,
-            x+1, y, z,   color[0]*shade, color[1]*shade, color[2]*shade,
-            x,   y, z,   color[0]*shade, color[1]*shade, color[2]*shade
+            x,   yBottom, z,   color[0]*shade, color[1]*shade, color[2]*shade,
+            x+1, yBottom, z,   color[0]*shade, color[1]*shade, color[2]*shade,
+            x+1, yBottom, z+1, color[0]*shade, color[1]*shade, color[2]*shade,
+            x,   yBottom, z,   color[0]*shade, color[1]*shade, color[2]*shade,
+            x+1, yBottom, z+1, color[0]*shade, color[1]*shade, color[2]*shade,
+            x,   yBottom, z+1, color[0]*shade, color[1]*shade, color[2]*shade
         };
         for (float v : verts) vertices.add(v);
     }
@@ -148,13 +151,14 @@ public class ChunkMesh {
     private void addNorthFace(List<Float> vertices, float x, float y, float z, BlockType block, int worldX, int worldY, int worldZ) {
         float[] color = applyTint(block.getFaceColor(2), worldX, worldY, worldZ);
         float shade = 0.85f;
+        float zNorth = z + 1.0f + EPSILON;
         float[] verts = {
-            x,   y,   z+1, color[0]*shade, color[1]*shade, color[2]*shade,
-            x,   y+1, z+1, color[0]*shade, color[1]*shade, color[2]*shade,
-            x+1, y+1, z+1, color[0]*shade, color[1]*shade, color[2]*shade,
-            x,   y,   z+1, color[0]*shade, color[1]*shade, color[2]*shade,
-            x+1, y+1, z+1, color[0]*shade, color[1]*shade, color[2]*shade,
-            x+1, y,   z+1, color[0]*shade, color[1]*shade, color[2]*shade
+            x,   y,   zNorth, color[0]*shade, color[1]*shade, color[2]*shade,
+            x+1, y,   zNorth, color[0]*shade, color[1]*shade, color[2]*shade,
+            x+1, y+1, zNorth, color[0]*shade, color[1]*shade, color[2]*shade,
+            x,   y,   zNorth, color[0]*shade, color[1]*shade, color[2]*shade,
+            x+1, y+1, zNorth, color[0]*shade, color[1]*shade, color[2]*shade,
+            x,   y+1, zNorth, color[0]*shade, color[1]*shade, color[2]*shade
         };
         for (float v : verts) vertices.add(v);
     }
@@ -162,13 +166,14 @@ public class ChunkMesh {
     private void addSouthFace(List<Float> vertices, float x, float y, float z, BlockType block, int worldX, int worldY, int worldZ) {
         float[] color = applyTint(block.getFaceColor(3), worldX, worldY, worldZ);
         float shade = 0.85f;
+        float zSouth = z - EPSILON;
         float[] verts = {
-            x+1, y,   z, color[0]*shade, color[1]*shade, color[2]*shade,
-            x+1, y+1, z, color[0]*shade, color[1]*shade, color[2]*shade,
-            x,   y+1, z, color[0]*shade, color[1]*shade, color[2]*shade,
-            x+1, y,   z, color[0]*shade, color[1]*shade, color[2]*shade,
-            x,   y+1, z, color[0]*shade, color[1]*shade, color[2]*shade,
-            x,   y,   z, color[0]*shade, color[1]*shade, color[2]*shade
+            x+1, y,   zSouth, color[0]*shade, color[1]*shade, color[2]*shade,
+            x+1, y+1, zSouth, color[0]*shade, color[1]*shade, color[2]*shade,
+            x,   y+1, zSouth, color[0]*shade, color[1]*shade, color[2]*shade,
+            x+1, y,   zSouth, color[0]*shade, color[1]*shade, color[2]*shade,
+            x,   y+1, zSouth, color[0]*shade, color[1]*shade, color[2]*shade,
+            x,   y,   zSouth, color[0]*shade, color[1]*shade, color[2]*shade
         };
         for (float v : verts) vertices.add(v);
     }
@@ -176,13 +181,14 @@ public class ChunkMesh {
     private void addEastFace(List<Float> vertices, float x, float y, float z, BlockType block, int worldX, int worldY, int worldZ) {
         float[] color = applyTint(block.getFaceColor(4), worldX, worldY, worldZ);
         float shade = 0.75f;
+        float xEast = x + 1.0f + EPSILON;
         float[] verts = {
-            x+1, y,   z+1, color[0]*shade, color[1]*shade, color[2]*shade,
-            x+1, y+1, z+1, color[0]*shade, color[1]*shade, color[2]*shade,
-            x+1, y+1, z,   color[0]*shade, color[1]*shade, color[2]*shade,
-            x+1, y,   z+1, color[0]*shade, color[1]*shade, color[2]*shade,
-            x+1, y+1, z,   color[0]*shade, color[1]*shade, color[2]*shade,
-            x+1, y,   z,   color[0]*shade, color[1]*shade, color[2]*shade
+            xEast, y,   z,   color[0]*shade, color[1]*shade, color[2]*shade,
+            xEast, y+1, z,   color[0]*shade, color[1]*shade, color[2]*shade,
+            xEast, y+1, z+1, color[0]*shade, color[1]*shade, color[2]*shade,
+            xEast, y,   z,   color[0]*shade, color[1]*shade, color[2]*shade,
+            xEast, y+1, z+1, color[0]*shade, color[1]*shade, color[2]*shade,
+            xEast, y,   z+1, color[0]*shade, color[1]*shade, color[2]*shade
         };
         for (float v : verts) vertices.add(v);
     }
@@ -190,13 +196,14 @@ public class ChunkMesh {
     private void addWestFace(List<Float> vertices, float x, float y, float z, BlockType block, int worldX, int worldY, int worldZ) {
         float[] color = applyTint(block.getFaceColor(5), worldX, worldY, worldZ);
         float shade = 0.75f;
+        float xWest = x - EPSILON;
         float[] verts = {
-            x, y,   z,   color[0]*shade, color[1]*shade, color[2]*shade,
-            x, y+1, z,   color[0]*shade, color[1]*shade, color[2]*shade,
-            x, y+1, z+1, color[0]*shade, color[1]*shade, color[2]*shade,
-            x, y,   z,   color[0]*shade, color[1]*shade, color[2]*shade,
-            x, y+1, z+1, color[0]*shade, color[1]*shade, color[2]*shade,
-            x, y,   z+1, color[0]*shade, color[1]*shade, color[2]*shade
+            xWest, y,   z+1, color[0]*shade, color[1]*shade, color[2]*shade,
+            xWest, y+1, z+1, color[0]*shade, color[1]*shade, color[2]*shade,
+            xWest, y+1, z,   color[0]*shade, color[1]*shade, color[2]*shade,
+            xWest, y,   z+1, color[0]*shade, color[1]*shade, color[2]*shade,
+            xWest, y+1, z,   color[0]*shade, color[1]*shade, color[2]*shade,
+            xWest, y,   z,   color[0]*shade, color[1]*shade, color[2]*shade
         };
         for (float v : verts) vertices.add(v);
     }
