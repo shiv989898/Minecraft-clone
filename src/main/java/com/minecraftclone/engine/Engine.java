@@ -51,6 +51,10 @@ public final class Engine {
         camera = new Camera(FIELD_OF_VIEW, window.getAspectRatio(), Z_NEAR, Z_FAR);
         world = new World();
         player = new Player(new Vector3f(0.5f, 45.0f, 0.5f));
+        
+        // Initialize camera at player position
+        camera.setPosition(player.getEyePosition());
+        camera.setRotation(0.0f, 0.0f);
 
         chunkShader = ShaderProgram.createChunkShader();
         chunkShader.bind();
